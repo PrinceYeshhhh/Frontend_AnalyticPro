@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, TrendingUp, DollarSign, Users, ShoppingCart, ArrowUpRight, ArrowDownRight, Brain, Zap } from 'lucide-react';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
@@ -7,9 +7,14 @@ import { ChartRenderer } from '../../components/charts/ChartRenderer';
 import { useDataStore } from '../../stores/dataStore';
 import { generateMockData } from '../../utils/dataParser';
 import { Chart, KPIWidget } from '../../types';
+import { SalesOverviewChart } from '../../components/charts/SalesOverviewChart';
+import { AIInsightCard } from '../../components/ai/AIInsightCard';
+import { DashboardSwitcher } from '../../components/dashboards/DashboardSwitcher';
+import { CreateDashboardModal } from '../../components/dashboards/CreateDashboardModal';
 
 export const Dashboard: React.FC = () => {
   const { datasets, addDataset } = useDataStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Add sample data if no datasets exist
@@ -102,21 +107,21 @@ export const Dashboard: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="p-4 sm:p-6 bg-gray-50 min-h-full">
+      <div className="p-4 sm:p-6 bg-gray-50 dark:bg-navy-900 min-h-full">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 space-y-4 sm:space-y-0 px-4 md:px-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 space-y-4 md:space-y-0">
           <div>
-            <h1 className="text-5xl font-extrabold text-gray-900 mb-4">Dashboard Overview</h1>
-            <p className="text-base text-gray-400 mb-6">Monitor your key business metrics and performance</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-navy-100 mb-2">Dashboard</h1>
+            <DashboardSwitcher onOpenCreateModal={() => setIsModalOpen(true)} />
           </div>
-          <div className="flex flex-wrap gap-4">
-            <Button variant="outline" className="shadow-lg">
-              <Brain className="h-5 w-5" />
+          <div className="flex flex-wrap gap-2 sm:gap-4">
+            <Button variant="outline" className="shadow-lg flex-grow sm:flex-grow-0">
+              <Brain className="h-5 w-5 mr-2" />
               AI Insights
             </Button>
-            <Button className="shadow-lg">
-              <Plus className="h-5 w-5" />
-              New Chart
+            <Button className="shadow-lg flex-grow sm:flex-grow-0" onClick={() => setIsModalOpen(true)}>
+              <Plus className="h-5 w-5 mr-2" />
+              Create Dashboard
             </Button>
           </div>
         </div>
@@ -130,16 +135,16 @@ export const Dashboard: React.FC = () => {
               <Card key={kpi.id} hover className="group">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-600 mb-1">{kpi.title}</p>
-                    <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                    <p className="text-sm font-medium text-gray-600 dark:text-navy-300 mb-1">{kpi.title}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                       {kpi.value}
                     </p>
                   </div>
                   <div className={`
                     w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-200 group-hover:scale-110
-                    ${kpi.trend === 'up' ? 'bg-green-100' : 'bg-blue-100'}
+                    ${kpi.trend === 'up' ? 'bg-green-100 dark:bg-green-900/50' : 'bg-blue-100 dark:bg-blue-900/50'}
                   `}>
-                    <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${kpi.trend === 'up' ? 'text-green-600' : 'text-blue-600'}`} />
+                    <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${kpi.trend === 'up' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'}`} />
                   </div>
                 </div>
                 
@@ -147,19 +152,32 @@ export const Dashboard: React.FC = () => {
                   <div className={`
                     flex items-center px-2 py-1 rounded-full text-xs font-semibold
                     ${kpi.trend === 'up' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-red-100 text-red-700'
+                      ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400' 
+                      : 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400'
                     }
                   `}>
                     <TrendIcon className="h-3 w-3 mr-1" />
                     {Math.abs(kpi.change)}%
                   </div>
-                  <span className="text-sm text-gray-600 ml-2">{kpi.period}</span>
+                  <span className="text-sm text-gray-600 dark:text-navy-300 ml-2">{kpi.period}</span>
                 </div>
               </Card>
             );
           })}
         </div>
+
+        {/* AI Insights Card */}
+        <div className="mb-8">
+          <AIInsightCard />
+        </div>
+
+        {/* Sales Overview Chart */}
+        <Card className="mb-8">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-navy-100 mb-4">
+            Sales Overview
+          </h3>
+          <SalesOverviewChart />
+        </Card>
 
         {/* Charts */}
         {currentDataset && (
@@ -183,8 +201,8 @@ export const Dashboard: React.FC = () => {
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">AI Insights</h3>
-                <p className="text-gray-600 text-sm">Latest insights from your data</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-navy-100">AI Insights</h3>
+                <p className="text-gray-600 dark:text-navy-300 text-sm">Latest insights from your data</p>
               </div>
             </div>
             <Button variant="outline" size="sm">
@@ -194,24 +212,24 @@ export const Dashboard: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-500/30 rounded-lg">
               <div className="flex items-start space-x-3">
-                <TrendingUp className="h-5 w-5 text-blue-600 mt-1" />
+                <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-1" />
                 <div>
-                  <h4 className="font-medium text-blue-900">Revenue Growth</h4>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <h4 className="font-medium text-blue-900 dark:text-blue-200">Revenue Growth</h4>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
                     📈 Revenue increased 12.5% this month, driven by higher customer retention
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+            <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-500/30 rounded-lg">
               <div className="flex items-start space-x-3">
-                <Users className="h-5 w-5 text-green-600 mt-1" />
+                <Users className="h-5 w-5 text-green-600 dark:text-green-400 mt-1" />
                 <div>
-                  <h4 className="font-medium text-green-900">Customer Behavior</h4>
-                  <p className="text-sm text-green-700 mt-1">
+                  <h4 className="font-medium text-green-900 dark:text-green-200">Customer Behavior</h4>
+                  <p className="text-sm text-green-700 dark:text-green-300 mt-1">
                     🎯 Weekend sales are 40% higher - optimize weekend campaigns
                   </p>
                 </div>
@@ -224,8 +242,8 @@ export const Dashboard: React.FC = () => {
         <Card>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Quick Actions</h3>
-              <p className="text-gray-600">Common tasks to manage your analytics</p>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-navy-100 mb-1">Quick Actions</h3>
+              <p className="text-gray-600 dark:text-navy-300">Common tasks to manage your analytics</p>
             </div>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
               <Button variant="outline" size="sm">
@@ -271,6 +289,8 @@ export const Dashboard: React.FC = () => {
             <Brain className="h-7 w-7" />
           </Button>
         </div>
+
+        <CreateDashboardModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
     </DashboardLayout>
   );

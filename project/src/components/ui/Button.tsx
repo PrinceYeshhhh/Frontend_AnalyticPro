@@ -43,13 +43,18 @@ export const Button: React.FC<ButtonProps> = ({
       shadow-md hover:shadow-xl
     `,
     outline: `
-      border-2 border-gray-300 hover:border-blue-500 
-      bg-white hover:bg-blue-50 text-gray-700 hover:text-blue-700 
+      border-2 border-gray-300 dark:border-navy-600 
+      bg-white dark:bg-navy-800 
+      hover:bg-blue-50 dark:hover:bg-navy-700
+      text-gray-700 dark:text-navy-200 
+      hover:text-blue-700 dark:hover:text-blue-400
       focus:ring-blue-500 focus:border-blue-500
       shadow-sm hover:shadow-md
     `,
     ghost: `
-      hover:bg-gray-100 text-gray-700 focus:ring-gray-500
+      hover:bg-gray-100 dark:hover:bg-navy-700/50
+      text-gray-700 dark:text-navy-200 
+      focus:ring-gray-500
       hover:shadow-sm
     `,
     danger: `

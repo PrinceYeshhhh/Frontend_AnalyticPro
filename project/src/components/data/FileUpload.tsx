@@ -88,15 +88,15 @@ export const FileUpload: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <Card hover className={processing ? 'opacity-50 pointer-events-none' : ''}>
+      <Card hover={!processing} className={processing ? 'opacity-50 pointer-events-none' : ''}>
         <div
           {...getRootProps()}
           className={`
             border-2 border-dashed rounded-xl p-8 text-center cursor-pointer 
             transition-all duration-300 ease-in-out transform
             ${isDragActive 
-              ? 'border-blue-400 bg-blue-50 scale-105 shadow-lg' 
-              : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50 hover:scale-102'
+              ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20 scale-105 shadow-lg' 
+              : 'border-gray-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-gray-50 dark:hover:bg-slate-700/50 hover:scale-102'
             }
             ${processing ? 'animate-pulse' : ''}
           `}
@@ -107,8 +107,8 @@ export const FileUpload: React.FC = () => {
             <div className={`
               w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-all duration-300
               ${isDragActive 
-                ? 'bg-blue-100 text-blue-600 scale-110' 
-                : 'bg-gray-100 text-gray-400 hover:bg-blue-100 hover:text-blue-600'
+                ? 'bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 scale-110' 
+                : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400 hover:bg-blue-100 dark:hover:bg-slate-600 hover:text-blue-600 dark:hover:text-blue-300'
               }
               ${processing ? 'animate-spin' : ''}
             `}>
@@ -121,27 +121,27 @@ export const FileUpload: React.FC = () => {
             
             {processing ? (
               <div className="animate-fade-in">
-                <p className="text-blue-600 font-semibold text-lg mb-2">AI Processing Your Data...</p>
-                <p className="text-blue-500 text-sm">Analyzing structure and generating insights</p>
+                <p className="text-blue-600 dark:text-blue-400 font-semibold text-lg mb-2">AI Processing Your Data...</p>
+                <p className="text-blue-500 dark:text-blue-500 text-sm">Analyzing structure and generating insights</p>
               </div>
             ) : isDragActive ? (
               <div className="animate-fade-in">
-                <p className="text-blue-600 font-semibold text-lg mb-2">Drop your file here!</p>
-                <p className="text-blue-500 text-sm">AI will process it instantly</p>
+                <p className="text-blue-600 dark:text-blue-400 font-semibold text-lg mb-2">Drop your file here!</p>
+                <p className="text-blue-500 dark:text-blue-500 text-sm">AI will process it instantly</p>
               </div>
             ) : (
               <div>
-                <p className="text-gray-700 font-semibold text-lg mb-2">
+                <p className="text-gray-700 dark:text-slate-200 font-semibold text-lg mb-2">
                   Drag & drop your data file here
                 </p>
-                <p className="text-gray-500 mb-4">
-                  or <span className="text-blue-600 font-medium">click to browse</span>
+                <p className="text-gray-500 dark:text-slate-400 mb-4">
+                  or <span className="text-blue-600 dark:text-blue-400 font-medium">click to browse</span>
                 </p>
-                <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 mb-4">
+                <div className="flex items-center justify-center space-x-2 text-sm text-gray-400 dark:text-slate-500 mb-4">
                   <Brain className="h-4 w-4" />
                   <span>AI will process your file and generate insights</span>
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-slate-500">
                   Supports CSV, Excel (.xlsx, .xls) files up to 10MB
                 </p>
               </div>
@@ -160,19 +160,19 @@ export const FileUpload: React.FC = () => {
           )}
         </div>
 
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
+        <div className="mt-6 p-4 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+          <h4 className="text-sm font-semibold text-gray-900 dark:text-slate-100 mb-3 flex items-center">
             <Sparkles className="h-4 w-4 mr-2 text-purple-600" />
             What happens after upload:
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="flex items-center p-2 bg-white rounded-md shadow-sm">
-              <Brain className="h-4 w-4 mr-2 text-blue-600" />
-              <span className="text-sm font-medium text-gray-700">AI analyzes your data</span>
+            <div className="flex items-center p-2 bg-white dark:bg-slate-600 rounded-md shadow-sm">
+              <Brain className="h-4 w-4 mr-2 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">AI analyzes your data</span>
             </div>
-            <div className="flex items-center p-2 bg-white rounded-md shadow-sm">
+            <div className="flex items-center p-2 bg-white dark:bg-slate-600 rounded-md shadow-sm">
               <Sparkles className="h-4 w-4 mr-2 text-purple-600" />
-              <span className="text-sm font-medium text-gray-700">Generates insights</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">Generates insights</span>
             </div>
           </div>
         </div>
@@ -181,9 +181,9 @@ export const FileUpload: React.FC = () => {
       {/* Data Preview */}
       {showPreview && uploadedData && (
         <Card className="animate-fade-in">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-              <Eye className="h-5 w-5 mr-2 text-blue-600" />
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 flex items-center">
+              <Eye className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400" />
               Data Preview - {uploadedData.name}
             </h3>
             <div className="flex space-x-2">
@@ -197,8 +197,8 @@ export const FileUpload: React.FC = () => {
             </div>
           </div>
 
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center text-blue-800">
+          <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-slate-700 rounded-lg">
+            <div className="flex items-center text-blue-800 dark:text-blue-300">
               <Brain className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">
                 Found {uploadedData.data.length} rows and {uploadedData.columns.length} columns
@@ -206,42 +206,42 @@ export const FileUpload: React.FC = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto border border-gray-200 dark:border-slate-700 rounded-lg">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+              <thead className="bg-gray-50 dark:bg-slate-800">
                 <tr>
                   {uploadedData.columns.slice(0, 6).map((column: any) => (
                     <th
                       key={column.name}
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wider"
                     >
                       {column.name}
                       <span className={`ml-1 px-1 py-0.5 rounded text-xs ${
-                        column.type === 'number' ? 'bg-blue-100 text-blue-700' :
-                        column.type === 'date' ? 'bg-green-100 text-green-700' :
-                        'bg-gray-100 text-gray-700'
+                        column.type === 'number' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' :
+                        column.type === 'date' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' :
+                        'bg-gray-100 text-gray-700 dark:bg-slate-600 dark:text-slate-300'
                       }`}>
                         {column.type}
                       </span>
                     </th>
                   ))}
                   {uploadedData.columns.length > 6 && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-slate-400">
                       +{uploadedData.columns.length - 6} more
                     </th>
                   )}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-slate-800/50 divide-y divide-gray-200 dark:divide-slate-700">
                 {uploadedData.data.slice(0, 5).map((row: any, index: number) => (
-                  <tr key={index} className="hover:bg-gray-50">
+                  <tr key={index} className="hover:bg-gray-50 dark:hover:bg-slate-700/50">
                     {uploadedData.columns.slice(0, 6).map((column: any) => (
-                      <td key={column.name} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <td key={column.name} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-slate-200">
                         {row[column.name]?.toString() || '-'}
                       </td>
                     ))}
                     {uploadedData.columns.length > 6 && (
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400 dark:text-slate-500">
                         ...
                       </td>
                     )}

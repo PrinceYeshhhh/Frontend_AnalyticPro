@@ -136,7 +136,7 @@ export const SelectPlan: React.FC = () => {
     switch (planId) {
       case 'solo': return 'from-blue-500 to-cyan-500';
       case 'pro': return 'from-purple-500 to-pink-500';
-      case 'elite': return 'from-yellow-500 to-orange-500';
+      case 'elite': return 'from-orange-500 to-red-500';
       default: return 'from-gray-500 to-gray-600';
     }
   };
@@ -244,24 +244,13 @@ export const SelectPlan: React.FC = () => {
 
                   {/* CTA Button */}
                   <Button
-                    onClick={() => handleSelectPlan(plan.id)}
+                    onClick={() => handleSelectPlan(plan.id as 'solo' | 'pro' | 'elite')}
                     disabled={loading}
                     loading={isSelected && loading}
-                    className={`w-full shadow-lg ${
-                      isRecommended 
-                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700' 
-                        : ''
-                    }`}
-                    size="lg"
+                    className={`w-full shadow-lg bg-gradient-to-r ${getPlanGradient(plan.id)} hover:scale-105 text-white`}
                   >
-                    {isSelected && loading ? (
-                      'Setting up your AI team...'
-                    ) : (
-                      <>
-                        Choose {plan.name}
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </>
-                    )}
+                    Choose {plan.name}
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </div>
               </Card>
