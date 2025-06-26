@@ -4,6 +4,7 @@ import { KPIWidget, Dataset } from '../../types';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { InsightModal } from '../ui/InsightModal';
+import { Tooltip } from '../ui/Tooltip';
 
 interface KPICardProps {
   kpi: KPIWidget;
@@ -122,7 +123,14 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi, datasets, onRemove, onCar
         )}
         <div className="flex items-center justify-between mb-4 gap-6">
           <div className="flex-1">
-            <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1" title={kpi.title === 'Conversion Rate' ? 'Conversion Rate – Percentage of users who completed the goal' : undefined}>{kpi.title}</p>
+            <div className="flex justify-between items-start">
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{kpi.title}</span>
+              <Tooltip content={`Insight for ${kpi.title}`}>
+                <button aria-label={`More information about ${kpi.title}`}>
+                  <Info className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                </button>
+              </Tooltip>
+            </div>
             <p className="text-3xl font-extrabold mb-1 flex items-center gap-2 text-gray-900 dark:text-gray-100" aria-label={`KPI value: ${formatValue(actualValue)}`}>
               {formatValue(actualValue)}
               <span className={`ml-1 ${kpi.trend === 'up' ? 'text-green-600' : kpi.trend === 'down' ? 'text-red-600' : 'text-gray-400'}`} aria-label={kpi.trend === 'up' ? 'Upward trend' : kpi.trend === 'down' ? 'Downward trend' : 'No trend'}>

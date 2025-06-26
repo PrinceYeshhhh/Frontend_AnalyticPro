@@ -8,6 +8,20 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        'main-dark': '#121212',
+        'section-dark': '#1A1A1A',
+        'card-dark': '#242424',
+        'primary': {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        'text-main-light': '#1F2937', // Dark gray for light theme text
+        'text-subtle-light': '#6B7280', // Lighter gray for subtitles
+        'text-main-dark': '#E5E7EB', // Off-white for dark theme text
+        'text-subtle-dark': '#9CA3AF', // Lighter gray for subtitles
+        'border-light': '#D1D5DB',
+        'border-dark': '#4B5563',
+        'placeholder': '#9CA3AF', // WCAG compliant placeholder
         gray: {
           50: '#f9fafb',
           100: '#f3f4f6',

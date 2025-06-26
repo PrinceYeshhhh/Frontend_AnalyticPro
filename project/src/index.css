@@ -453,3 +453,17 @@ button, a, input, select, textarea, [tabindex]:not([tabindex="-1"]) {
     padding: 2rem;
   }
 }
+
+/*--------------------------------------------------------------------------------
+  6. Cross-Browser Compatibility & Mobile UX
+--------------------------------------------------------------------------------*/
+.scrollable-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix for iOS Safari input zoom */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select {
+    font-size: 16px;
+  }
+}

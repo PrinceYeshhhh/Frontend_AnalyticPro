@@ -1,11 +1,12 @@
 import React, { useState, Suspense } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale } from "chart.js";
-import { FilterBar } from '../../components/ui/FilterBar';
+import { FilterBar, FilterState } from '../../components/ui/FilterBar';
 import { KPICard } from '../../components/kpi/KPICard';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { LoadingState } from '../../components/ui/LoadingState';
 import { KPIWidget } from '../../types';
+import { useDebouncedCallback } from 'use-debounce';
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -59,6 +60,10 @@ const InsightModal = React.lazy(() => import('../../components/ui/InsightModal')
 const AnalyticsProDashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedKpi, setSelectedKpi] = useState<KPIWidget | null>(null);
+  const [filters, setFilters] = useState<FilterState>({
+    dateRange: 'all',
+    segment: 'all',
+  });
   const chartPlaceholder = {
     title: 'Revenue Overview',
     xAxis: 'Month',
@@ -77,9 +82,17 @@ const AnalyticsProDashboard = () => {
     { Month: 'Jun', Revenue: 22000 },
   ];
 
-  const handleKpiClick = (kpiData: KPIWidget) => {
+  const handleKpiClick = useDebouncedCallback((kpiData: KPIWidget) => {
     setSelectedKpi(kpiData);
     setModalOpen(true);
+  }, 300, { leading: true, trailing: false });
+
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+  };
+
+  const handleClearFilters = () => {
+    setFilters({ dateRange: 'all', segment: 'all' });
   };
 
   // A placeholder for the mini chart in the modal
@@ -142,7 +155,11 @@ const AnalyticsProDashboard = () => {
 
       {/* Main Content */}
       <main className="bg-section-light dark:bg-section-dark lg:ml-64 px-4 md:px-8 py-8 lg:py-10 space-y-6 relative z-10">
-        <FilterBar />
+        <FilterBar 
+          filters={filters} 
+          onFilterChange={handleFilterChange}
+          onClearFilters={handleClearFilters}
+        />
         {/* Header */}
         <div className="mt-16 lg:mt-0">
           <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight mb-4">
