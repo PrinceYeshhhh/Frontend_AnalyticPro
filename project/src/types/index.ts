@@ -193,6 +193,7 @@ export interface SmartAlert {
   metric?: string;
   threshold?: number;
   currentValue?: number;
+  category?: string;
 }
 
 export interface TeamMember {

@@ -18,7 +18,7 @@ import { Button } from '../ui/Button';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-  { name: 'Data Sources', href: '/data', icon: Upload },
+  { name: 'Upload', href: '/upload', icon: Upload },
   { name: 'My Dashboards', href: '/dashboards', icon: FolderOpen },
   { name: 'AI Analytics', href: '/ai-analytics', icon: Brain, badge: 'NEW' },
   { name: 'Team', href: '/team', icon: Users },

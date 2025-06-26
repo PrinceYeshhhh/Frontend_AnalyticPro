@@ -36,7 +36,6 @@ export class RealTimeAnalyticsService {
     }, interval);
 
     this.monitoringIntervals.set(datasetId, intervalId);
-    console.log(`Started real-time monitoring for dataset ${datasetId}`);
   }
 
   /**
@@ -47,7 +46,6 @@ export class RealTimeAnalyticsService {
     if (intervalId) {
       clearInterval(intervalId);
       this.monitoringIntervals.delete(datasetId);
-      console.log(`Stopped monitoring for dataset ${datasetId}`);
     }
   }
 
@@ -128,7 +126,7 @@ export class RealTimeAnalyticsService {
       this.notifySubscribers(datasetId, {
         type: 'error',
         timestamp: new Date().toISOString(),
-        error: error.message
+        error: error instanceof Error ? error.message : 'An unknown error occurred'
       });
     }
   }

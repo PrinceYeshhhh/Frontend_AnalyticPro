@@ -22,8 +22,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) =>
         if ('Notification' in window && Notification.permission === 'default') {
           await Notification.requestPermission();
         }
-        
-        console.log('Backend services initialized successfully');
       } catch (error) {
         console.error('Failed to initialize backend services:', error);
       }

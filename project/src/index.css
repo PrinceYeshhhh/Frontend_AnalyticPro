@@ -29,6 +29,25 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  background-color: #f9fafb;
+  color: #374151;
+}
+body {
+  background-color: #fff;
+  color: #374151;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #111827;
+}
+
+.bg-card-light {
+  background-color: #fff;
+  color: #374151;
+}
+.bg-section-light {
+  background-color: #f9fafb;
+  color: #374151;
 }
 
 /* Custom animations */
@@ -264,18 +283,40 @@ html {
 /* Dark mode support (future enhancement) */
 @media (prefers-color-scheme: dark) {
   html {
-    background-color: #0f172a;
-    color: #e5e7eb;
+    background-color: #121212;
+    color: #e0e0e0;
   }
   body {
-    background-color: #0f172a;
-    color: #e5e7eb;
+    background-color: #121212;
+    color: #e0e0e0;
   }
 }
 
 .dark {
-  background-color: #0f172a;
-  color: #e5e7eb;
+  background-color: #121212;
+  color: #e0e0e0;
+}
+.dark body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #f3f4f6;
+}
+.dark .bg-card-dark {
+  background-color: #181f2a;
+  color: #e0e0e0;
+}
+.dark .bg-section-dark {
+  background-color: #181f2a;
+  color: #e0e0e0;
+}
+
+/* Muted accent colors for dark mode */
+.dark .btn-primary, .dark .accent {
+  background-color: #6366f1;
+  color: #e0e0e0;
+  filter: brightness(0.9);
 }
 
 /* Neon text and glowing effects for dark mode */

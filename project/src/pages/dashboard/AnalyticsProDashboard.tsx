@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale } from "chart.js";
+import { FilterBar } from '../../components/ui/FilterBar';
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -48,7 +49,26 @@ const chartOptions = {
   maintainAspectRatio: false,
 };
 
+const BarChart = React.lazy(() => import('../../components/charts/BarChart').then(module => ({ default: module.BarChart })));
+
 export default function AnalyticsProDashboard() {
+  const chartPlaceholder = {
+    title: 'Revenue Overview',
+    xAxis: 'Month',
+    yAxis: 'Revenue',
+    config: {
+      showLegend: true,
+      colors: ['#6366f1'],
+    },
+  };
+  const dataPlaceholder = [
+    { Month: 'Jan', Revenue: 12000 },
+    { Month: 'Feb', Revenue: 15000 },
+    { Month: 'Mar', Revenue: 11000 },
+    { Month: 'Apr', Revenue: 17000 },
+    { Month: 'May', Revenue: 19000 },
+    { Month: 'Jun', Revenue: 22000 },
+  ];
   return (
     <div className="min-h-screen bg-[#0F172A] text-gray-300 font-sans relative overflow-x-hidden">
       {/* Floating Glow Elements */}
@@ -103,13 +123,59 @@ export default function AnalyticsProDashboard() {
       </div>
 
       {/* Main Content */}
-      <main className="lg:ml-64 px-4 md:px-8 py-8 lg:py-10 space-y-8 relative z-10">
+      <main className="bg-section-light dark:bg-section-dark lg:ml-64 px-4 md:px-8 py-8 lg:py-10 space-y-6 relative z-10">
+        <FilterBar />
         {/* Header */}
         <div className="mt-16 lg:mt-0">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
-            Welcome to <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Analytics Pro</span>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight mb-4">
+            Welcome to <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">Analytics Pro</span>
           </h1>
-          <p className="text-gray-400 max-w-2xl">Transform your data into actionable insights with our AI-powered analytics platform.</p>
+          <p className="text-gray-700 dark:text-gray-300 max-w-2xl">Transform your data into actionable insights with our AI-powered analytics platform.</p>
+        </div>
+
+        {/* Responsive KPI/Chart Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {/* Example KPI Card (replace with real KPICard components) */}
+          <div className="col-span-1">
+            <div className="bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-md flex flex-col items-center justify-center h-full">
+              <span className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-2">$22,000</span>
+              <span className="font-semibold text-gray-700 dark:text-indigo-400">Total Revenue</span>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <div className="bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-md flex flex-col items-center justify-center h-full">
+              <span className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-2">1,200</span>
+              <span className="font-semibold text-gray-700 dark:text-indigo-400">Active Users</span>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <div className="bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-md flex flex-col items-center justify-center h-full">
+              <span className="text-4xl font-extrabold text-gray-900 dark:text-gray-100 mb-2">4.2%</span>
+              <span className="font-semibold text-gray-700 dark:text-indigo-400">Conversion Rate</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Chart Section (responsive) */}
+        <div className="bg-card-light dark:bg-card-dark rounded-2xl p-6 shadow-md mt-6">
+          <div className="flex flex-wrap items-center justify-between mb-6 gap-4">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Revenue Overview</h2>
+            <div className="flex space-x-2">
+              {['1D', '1W', '1M', '1Y'].map((period) => (
+                <button
+                  key={period}
+                  className="px-3 py-1 rounded-lg text-sm bg-gray-100 dark:bg-indigo-700/30 text-gray-700 dark:text-indigo-200 hover:bg-gray-200 dark:hover:bg-indigo-600 transition-colors"
+                >
+                  {period}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="h-[300px] w-full">
+            <Suspense fallback={<div className="flex items-center justify-center h-full"><span className="loader" /></div>}>
+              <BarChart chart={chartPlaceholder as any} data={dataPlaceholder} />
+            </Suspense>
+          </div>
         </div>
 
         {/* Upload Box */}
@@ -123,26 +189,6 @@ export default function AnalyticsProDashboard() {
             </div>
             <p className="text-gray-300 mb-2">Drop your CSV/Excel files here or click to upload</p>
             <p className="text-sm text-gray-500">Supports CSV, XLS, XLSX up to 50MB</p>
-          </div>
-        </div>
-
-        {/* Chart Section */}
-        <div className="bg-[#1E2533]/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-indigo-500/10">
-          <div className="flex flex-wrap items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-white">Revenue Overview</h2>
-            <div className="flex space-x-2">
-              {["1D", "1W", "1M", "1Y"].map((period) => (
-                <button
-                  key={period}
-                  className="px-3 py-1 rounded-lg text-sm bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 transition-colors"
-                >
-                  {period}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="h-[300px]">
-            <Line data={data} options={chartOptions} />
           </div>
         </div>
 

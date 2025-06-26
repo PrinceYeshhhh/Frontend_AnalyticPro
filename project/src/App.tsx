@@ -16,6 +16,7 @@ import { AIAnalyticsPage } from './pages/ai/AIAnalyticsPage';
 import { TeamPage } from './pages/team/TeamPage';
 import { BillingPage } from './pages/billing/BillingPage';
 import { SettingsPage } from './pages/settings/SettingsPage';
+import UploadPage from './pages/data/UploadPage';
 
 function App() {
   return (
@@ -119,6 +120,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <SettingsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/upload"
+              element={
+                <ProtectedRoute>
+                  <UploadPage />
                 </ProtectedRoute>
               }
             />
