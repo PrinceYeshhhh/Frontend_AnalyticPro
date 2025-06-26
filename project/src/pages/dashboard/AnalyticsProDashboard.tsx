@@ -1,7 +1,11 @@
-import React, { Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale } from "chart.js";
 import { FilterBar } from '../../components/ui/FilterBar';
+import { KPICard } from '../../components/kpi/KPICard';
+import { EmptyState } from '../../components/ui/EmptyState';
+import { LoadingState } from '../../components/ui/LoadingState';
+import { KPIWidget } from '../../types';
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -50,8 +54,11 @@ const chartOptions = {
 };
 
 const BarChart = React.lazy(() => import('../../components/charts/BarChart').then(module => ({ default: module.BarChart })));
+const InsightModal = React.lazy(() => import('../../components/ui/InsightModal').then(module => ({ default: module.InsightModal })));
 
-export default function AnalyticsProDashboard() {
+const AnalyticsProDashboard = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedKpi, setSelectedKpi] = useState<KPIWidget | null>(null);
   const chartPlaceholder = {
     title: 'Revenue Overview',
     xAxis: 'Month',
@@ -69,6 +76,17 @@ export default function AnalyticsProDashboard() {
     { Month: 'May', Revenue: 19000 },
     { Month: 'Jun', Revenue: 22000 },
   ];
+
+  const handleKpiClick = (kpiData: KPIWidget) => {
+    setSelectedKpi(kpiData);
+    setModalOpen(true);
+  };
+
+  // A placeholder for the mini chart in the modal
+  const renderMiniChart = () => (
+    <div className="w-full h-24 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse" />
+  );
+
   return (
     <div className="min-h-screen bg-[#0F172A] text-gray-300 font-sans relative overflow-x-hidden">
       {/* Floating Glow Elements */}
@@ -250,7 +268,23 @@ export default function AnalyticsProDashboard() {
             </p>
           </div>
         </footer>
+
+        {isModalOpen && selectedKpi && (
+          <Suspense fallback={<div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" />}>
+            <InsightModal
+              open={isModalOpen}
+              onClose={() => setModalOpen(false)}
+              title={selectedKpi.title}
+              miniChart={renderMiniChart()}
+              description={`Detailed insights for ${selectedKpi.title}. Current value is ${selectedKpi.value}.`}
+            >
+              <p>Additional details about the KPI can be rendered here as children.</p>
+            </InsightModal>
+          </Suspense>
+        )}
       </main>
     </div>
   );
-}
+};
+
+export default AnalyticsProDashboard;
