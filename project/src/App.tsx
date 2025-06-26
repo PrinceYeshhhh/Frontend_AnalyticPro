@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Login } from './pages/auth/Login';
 import { Signup } from './pages/auth/Signup';
 import { SelectPlan } from './pages/onboarding/SelectPlan';
-import { Dashboard } from './pages/dashboard/Dashboard';
+import AnalyticsProDashboard from './pages/dashboard/AnalyticsProDashboard';
 import { SoloDashboard } from './pages/dashboard/SoloDashboard';
 import { ProDashboard } from './pages/dashboard/ProDashboard';
 import { EliteDashboard } from './pages/dashboard/EliteDashboard';
@@ -63,12 +63,12 @@ function App() {
               }
             />
             
-            {/* Legacy dashboard route - redirects based on user plan */}
+            {/* Main dashboard route */}
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <AnalyticsProDashboard />
                 </ProtectedRoute>
               }
             />
@@ -124,10 +124,10 @@ function App() {
             />
             
             {/* Redirect root to select-plan for new users, or dashboard for existing */}
-            <Route path="/" element={<Navigate to="/select-plan" replace />} />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             
-            {/* Catch all - redirect to select-plan */}
-            <Route path="*" element={<Navigate to="/select-plan" replace />} />
+            {/* Catch all - redirect to dashboard */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
           
           <Toaster
@@ -135,9 +135,19 @@ function App() {
             toastOptions={{
               duration: 4000,
               style: {
-                background: '#fff',
-                color: '#333',
+                background: '#333',
+                color: '#fff',
                 boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              },
+              success: {
+                style: {
+                  background: '#10B981',
+                },
+              },
+              error: {
+                style: {
+                  background: '#EF4444',
+                },
               },
             }}
           />

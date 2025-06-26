@@ -44,7 +44,26 @@ export default {
           700: '#334155',
           800: '#1e293b',
           900: '#0f172a',
-        }
+        },
+        indigo: {
+          400: '#818cf8',
+          500: '#6366f1',
+          600: '#4f46e5',
+        },
+        purple: {
+          400: '#a78bfa',
+          500: '#8b5cf6',
+          600: '#7c3aed',
+        },
+        blue: {
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+        },
+        pink: {
+          400: '#f472b6',
+          500: '#ec4899',
+        },
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
@@ -72,6 +91,18 @@ export default {
       },
       scale: {
         '102': '1.02',
+      },
+      boxShadow: {
+        'neon-indigo': '0 0 16px 2px #6366f1',
+        'neon-purple': '0 0 16px 2px #8b5cf6',
+        'neon-blue': '0 0 16px 2px #2563eb',
+        'neon-mixed': '0 0 24px 4px #6366f1, 0 0 32px 8px #8b5cf6',
+      },
+      backgroundImage: {
+        'radial-neon': 'radial-gradient(circle at 60% 40%, #6366f1 0%, #8b5cf6 40%, #0f172a 100%)',
+        'radial-blue': 'radial-gradient(circle at 70% 30%, #2563eb 0%, #0f172a 100%)',
+        'radial-purple': 'radial-gradient(circle at 30% 70%, #8b5cf6 0%, #0f172a 100%)',
+        'neon-gradient': 'linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #2563eb 100%)',
       },
     },
   },
