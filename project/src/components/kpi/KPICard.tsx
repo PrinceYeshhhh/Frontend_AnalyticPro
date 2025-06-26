@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, Minus, X, BarChart2 } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, X, BarChart2, Info } from 'lucide-react';
 import { KPIWidget, Dataset } from '../../types';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -9,9 +9,10 @@ interface KPICardProps {
   kpi: KPIWidget;
   datasets: Dataset[];
   onRemove?: () => void;
+  onCardClick: (kpi: KPIWidget) => void;
 }
 
-export const KPICard: React.FC<KPICardProps> = ({ kpi, datasets, onRemove }) => {
+export const KPICard: React.FC<KPICardProps> = ({ kpi, datasets, onRemove, onCardClick }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const dataset = datasets.find(d => d.id === kpi.datasetId);
   
@@ -95,9 +96,19 @@ export const KPICard: React.FC<KPICardProps> = ({ kpi, datasets, onRemove }) => 
   );
   const description = `This represents ${kpi.title.toLowerCase()} breakdown by channel.`;
 
+  const trendIcon = kpi.change > 0 ? '📈' : '📉';
+  const trendColor = kpi.change > 0 ? 'text-green-500' : 'text-red-500';
+
   return (
     <>
-      <Card hover className="group relative cursor-pointer bg-card-light dark:bg-card-dark shadow-md p-6 rounded-2xl gap-6" onClick={() => setModalOpen(true)}>
+      <Card
+        className="flex flex-col p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/60 transition-colors"
+        onClick={() => onCardClick(kpi)}
+        aria-label={`View details for ${kpi.title}`}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => (e.key === 'Enter' || e.key === ' ') && onCardClick(kpi)}
+      >
         {onRemove && (
           <Button
             variant="ghost"

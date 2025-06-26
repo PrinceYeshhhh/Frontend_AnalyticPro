@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Filter } from 'lucide-react';
 import { FilterChip } from './FilterChip';
+import { useDebouncedCallback } from 'use-debounce';
+import { Button } from './Button';
+import { SlidersHorizontal, X } from 'lucide-react';
 
 const dateRanges = [
   { label: 'Today', value: 'today' },
@@ -15,46 +18,53 @@ const segments = [
   { label: 'New Users', value: 'new' },
 ];
 
-interface FilterBarProps {
-  onChange?: (filters: { dateRange: string; segment: string }) => void;
+export interface FilterState {
+  dateRange: string;
+  segment: string;
+  // Add other filter keys here
 }
 
-export const FilterBar: React.FC<FilterBarProps> = ({ onChange }) => {
+interface FilterBarProps {
+  filters: FilterState;
+  onFilterChange: (filters: FilterState) => void;
+  onClearFilters: () => void;
+}
+
+export const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange, onClearFilters }) => {
   const [dateRange, setDateRange] = useState('today');
   const [segment, setSegment] = useState('all');
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const debouncedOnChange = (filters: { dateRange: string; segment: string }) => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      onChange?.(filters);
-    }, 300);
-  };
+  const debouncedOnFilterChange = useDebouncedCallback(onFilterChange, 300);
 
   // Show chips for applied filters (not default)
   const appliedFilters = [];
   if (dateRange !== 'today') appliedFilters.push({ label: `Date: ${dateRanges.find(d => d.value === dateRange)?.label || dateRange}`, key: 'dateRange' });
   if (segment !== 'all') appliedFilters.push({ label: `Segment: ${segments.find(s => s.value === segment)?.label || segment}`, key: 'segment' });
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { name, value } = e.target;
+    debouncedOnFilterChange({ ...filters, [name]: value });
+  };
+
   const handleDateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDateRange(e.target.value);
-    onChange?.({ dateRange: e.target.value, segment });
+    handleInputChange(e);
   };
   const handleSegmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSegment(e.target.value);
-    onChange?.({ dateRange, segment: e.target.value });
+    handleInputChange(e);
   };
 
   const handleRemoveFilter = (key: string) => {
-    if (key === 'dateRange') setDateRange('today');
-    if (key === 'segment') setSegment('all');
-    onChange?.({ dateRange: key === 'dateRange' ? 'today' : dateRange, segment: key === 'segment' ? 'all' : segment });
+    const newFilters = { ...filters };
+    if (key === 'dateRange') newFilters.dateRange = 'all'; // or a default value
+    if (key === 'segment') newFilters.segment = 'all'; // or a default value
+    onFilterChange(newFilters); // Clear immediately, no debounce
   };
+
   const handleClearAll = () => {
-    setDateRange('today');
-    setSegment('all');
-    onChange?.({ dateRange: 'today', segment: 'all' });
+    onClearFilters(); // Clear immediately, no debounce
   };
 
   return (

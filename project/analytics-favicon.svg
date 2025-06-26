@@ -1,6 +1,22 @@
-<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="4" y="18" width="4" height="10" rx="1" fill="#6366f1"/>
-  <rect x="12" y="12" width="4" height="16" rx="1" fill="#8b5cf6"/>
-  <rect x="20" y="6" width="4" height="22" rx="1" fill="#2563eb"/>
-  <circle cx="28" cy="8" r="2" fill="#60a5fa"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Background -->
+  <rect width="64" height="64" rx="12" fill="url(#bg-gradient)"/>
+  
+  <!-- Icon Shape: Abstract 'A' for Analytics -->
+  <path d="M20 48L32 16L44 48" stroke="url(#line-gradient)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26 38H38" stroke="url(#line-gradient)" stroke-width="6" stroke-linecap="round"/>
+  
+  <defs>
+    <!-- Background Gradient: Deep Indigo to Purple -->
+    <linearGradient id="bg-gradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E3192"/>
+      <stop offset="1" stop-color="#1B1F6C"/>
+    </linearGradient>
+    
+    <!-- Line Gradient: Bright Neon Blue to Magenta -->
+    <linearGradient id="line-gradient" x1="20" y1="16" x2="44" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3FA9F5"/>
+      <stop offset="1" stop-color="#A328C7"/>
+    </linearGradient>
+  </defs>
 </svg> 

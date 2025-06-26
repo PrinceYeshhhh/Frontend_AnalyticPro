@@ -127,7 +127,18 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Focus styles for accessibility */
 .focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-900;
+}
+
+/* Apply the focus ring to common interactive elements */
+button, a, input, select, textarea, [tabindex]:not([tabindex="-1"]) {
+  @apply rounded-md; /* Ensure rounded corners for the ring to look good */
+  @apply focus-ring;
+}
+
+/* Ensure high-contrast focus on critical UI in dark mode */
+.dark .dark-focus-ring {
+  @apply focus:ring-blue-400 focus:ring-offset-gray-800;
 }
 
 /* Custom gradient backgrounds */
